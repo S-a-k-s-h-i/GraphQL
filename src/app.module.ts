@@ -10,6 +10,7 @@ import { UserModule } from './user/user.module';
   imports: [
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      installSubscriptionHandlers:true
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',

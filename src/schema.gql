@@ -27,3 +27,7 @@ input UpdateUserInput {
   name: String!
   age: Float
 }
+
+type Subscription {
+  userAdded: User!
+}
