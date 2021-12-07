@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import * as bcrypt from 'bcrypt';
 
 @Entity()
 @ObjectType()
@@ -19,5 +20,10 @@ export class User{
     @Column()
     @Field()
     password:string;
+
+    @BeforeInsert()
+    hashPassword() {
+      this.password = bcrypt.hashSync(this.password, 10);
+    }
 }
 

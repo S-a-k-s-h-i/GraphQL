@@ -1,9 +1,11 @@
-import { Resolver,Query, Mutation, Args, Int, Subscription } from '@nestjs/graphql';
+import { Resolver,Query, Mutation, Args, Int, Subscription, Context } from '@nestjs/graphql';
 import { createUserInput } from './createUser.input';
 import { UpdateUserInput} from './updateUser.input';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 import { PubSub } from 'graphql-subscriptions'
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 const pubSub = new PubSub();
 
@@ -16,12 +18,12 @@ export class UserResolver {
         return this.userService.findAllUsers()
     }
     
-    @Mutation(returns => User)
-    createUser(@Args('createUserInput')createUserInput:createUserInput):Promise<User>{
-        const newUser = this.userService.createNewUser(createUserInput);
-        pubSub.publish('userAdded',{userAdded:newUser});
-        return newUser;
-    }
+    // @Mutation(returns => User)
+    // createUser(@Args('createUserInput')createUserInput:createUserInput):Promise<User>{
+    //     const newUser = this.userService.createNewUser(createUserInput);
+    //     pubSub.publish('userAdded',{userAdded:newUser});
+    //     return newUser;
+    // }
     
     @Mutation(returns => User)
     findUserById(@Args('id',{type:() => Int}) id:number):Promise<User>{
@@ -36,5 +38,11 @@ export class UserResolver {
     @Subscription(returns => User)
     userAdded(){
       return pubSub.asyncIterator('userAdded');
+    }
+    
+    @Mutation(returns => User)
+    @UseGuards(JwtAuthGuard)
+    getProfile(@Context() context):Promise<User>{
+      return context.req.user
     }
 }

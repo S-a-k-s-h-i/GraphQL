@@ -9,24 +9,37 @@ type User {
   password: String!
 }
 
+type LoginResponse {
+  access_token: String!
+  user: User!
+}
+
 type Query {
   AllUsers: [User!]!
 }
 
 type Mutation {
-  createUser(createUserInput: createUserInput!): User!
   findUserById(id: Int!): User!
   updateUserById(updateUserInput: UpdateUserInput!, id: Float!): User!
-}
-
-input createUserInput {
-  username: String!
-  age: Float
+  getProfile: User!
+  login(loginUserInput: LoginUserInput!): LoginResponse!
+  signUp(createUserInput: createUserInput!): User!
 }
 
 input UpdateUserInput {
   username: String!
   age: Float
+}
+
+input LoginUserInput {
+  username: String!
+  password: String!
+}
+
+input createUserInput {
+  username: String!
+  age: Float
+  password: String!
 }
 
 type Subscription {

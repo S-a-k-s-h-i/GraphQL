@@ -26,4 +26,8 @@ export class UserService {
         Object.assign(user,updateUserInput)
         return this.userRepository.save(user);
     }
+
+    async findByUsername(userName:string):Promise<any>{
+        return await this.userRepository.findOne({where:{username:userName}});
+    }
 }
