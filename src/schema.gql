@@ -4,8 +4,9 @@
 
 type User {
   id: Int!
-  name: String!
+  username: String!
   age: Int
+  password: String!
 }
 
 type Query {
@@ -19,12 +20,12 @@ type Mutation {
 }
 
 input createUserInput {
-  name: String!
+  username: String!
   age: Float
 }
 
 input UpdateUserInput {
-  name: String!
+  username: String!
   age: Float
 }
 

@@ -4,7 +4,7 @@ import { Field, InputType, Int } from "@nestjs/graphql";
 export class UpdateUserInput{
 
     @Field()
-    name:string;
+    username:string;
     
     @Field({nullable:true})
     age?:number;

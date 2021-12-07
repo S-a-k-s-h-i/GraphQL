@@ -10,11 +10,14 @@ export class User{
     
     @Column()
     @Field()
-    name:string;
+    username:string;
     
     @Column({nullable:true})
     @Field(type => Int,{nullable:true})
     age?:number;
-
+    
+    @Column()
+    @Field()
+    password:string;
 }
 
