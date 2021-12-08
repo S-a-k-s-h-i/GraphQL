@@ -9,13 +9,18 @@ type User {
   password: String!
 }
 
+type AllUsersPaginateEventDto {
+  total: Float!
+  data: [User!]!
+}
+
 type LoginResponse {
   access_token: String!
   user: User!
 }
 
 type Query {
-  AllUsers: [User!]!
+  AllUsers(take: Int, offset: Int): AllUsersPaginateEventDto!
 }
 
 type Mutation {

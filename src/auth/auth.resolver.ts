@@ -1,6 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
-import { createUserInput } from 'src/user/createUser.input';
+import { createUserInput } from '../user/dto/createUser.input';
 import { User } from 'src/user/user.entity';
 import { AuthService } from './auth.service';
 import { LoginResponse } from './dto/login-response';

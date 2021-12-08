@@ -1,15 +1,21 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { createUserInput } from './createUser.input';
-import { UpdateUserInput} from './updateUser.input';
+import { AllUsersArgs } from './dto/allUsersArgs.args';
+import { createUserInput } from './dto/createUser.input';
+import { UpdateUserInput} from './dto/updateUser.input';
 import { User } from './user.entity';
 
 @Injectable()
 export class UserService {
     constructor(@InjectRepository(User) private userRepository:Repository<User>){}
-    async findAllUsers():Promise<User[]>{
-        return this.userRepository.find();
+    async findAllUsers(args:AllUsersArgs){
+        const q = this.userRepository.createQueryBuilder('users');
+        if(args.take) q.take(args.take);
+        if(args.offset) q.offset(args.offset);
+        
+        const [data,total] = await q.getManyAndCount();
+        return {data,total};
     }
 
     async createNewUser(createUserInput:createUserInput):Promise<User>{

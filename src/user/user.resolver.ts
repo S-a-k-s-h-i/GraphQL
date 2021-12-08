@@ -1,11 +1,13 @@
 import { Resolver,Query, Mutation, Args, Int, Subscription, Context } from '@nestjs/graphql';
-import { createUserInput } from './createUser.input';
-import { UpdateUserInput} from './updateUser.input';
+import { createUserInput } from './dto/createUser.input';
+import { UpdateUserInput} from './dto/updateUser.input';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 import { PubSub } from 'graphql-subscriptions'
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { AllUsersArgs } from './dto/allUsersArgs.args';
+import { AllUsersPaginateEventDto } from './dto/paginate-allusers-event.dto';
 
 const pubSub = new PubSub();
 
@@ -13,9 +15,10 @@ const pubSub = new PubSub();
 export class UserResolver {
     constructor(private userService:UserService){}
     
-    @Query(returns => [User])
-    AllUsers(): Promise<User[]>{
-        return this.userService.findAllUsers()
+    @Query(returns => AllUsersPaginateEventDto)
+    async AllUsers(@Args() args:AllUsersArgs){
+        const {data,total} = await this.userService.findAllUsers(args);
+        return new AllUsersPaginateEventDto(data,total);
     }
     
     // @Mutation(returns => User)
