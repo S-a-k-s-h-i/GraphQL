@@ -20,7 +20,12 @@ type LoginResponse {
 }
 
 type Query {
-  AllUsers(take: Int, offset: Int): AllUsersPaginateEventDto!
+  AllUsers(take: Int, offset: Int, sort: [SortInput!]): AllUsersPaginateEventDto!
+}
+
+input SortInput {
+  sortBy: String!
+  sort: String!
 }
 
 type Mutation {
