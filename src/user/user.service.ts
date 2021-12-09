@@ -15,7 +15,7 @@ export class UserService {
     async findAllUsers(args:AllUsersArgs){
         const q = this.userRepository
         .createQueryBuilder('users');
-
+        //offset based pagination
         if(args.take) q.take(args.take);
         if(args.offset) q.offset(args.offset);
         //sorting
